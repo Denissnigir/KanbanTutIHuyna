@@ -1,0 +1,65 @@
+﻿<Window x:Class="WpfApp2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp2"
+        xmlns:conv="clr-namespace:KC.WPF_Kanban.Converter;assembly=WPF-Kanban"
+        xmlns:kanban="clr-namespace:KC.WPF_Kanban;assembly=WPF-Kanban"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <kanban:KanbanBoard Name="kanBoard"
+                            Title="My Board"
+                            ColumnPath="[Column]"
+                            ItemsSource="{Binding Collection}"
+                            CanCollapseSubcolumns="true"
+                            SwimlanePath="[Lane]">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <kanban:KanbanCard Blockers="{Binding Blocker}"
+                                       CardSize="{Binding Size}"
+                                       CreationTime="{Binding CreationTime}"
+                                       DescriptionText="{Binding Description}"
+                                       ElapsedTimeUnits="All"
+                                       LeftTitle="{Binding Number}"
+                                       RightTitle="{Binding Assignee}"
+                                       TileBrush="{Binding TileRgb, Converter={StaticResource convBrush}}"
+                                       TileText="{Binding TileText}"
+                                       WorkedMinutes="{Binding Duration}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <kanban:KanbanBoard.Columns>
+                <kanban:KanbanColumn Caption="Backlog"
+                                     CardLimit="5"
+                                     ColumnValue="Backlog"
+                                     IsCollapsed="True"
+                                     Color="Black" />
+                <kanban:KanbanColumn Caption="Requested"
+                                     CardLimit="4"
+                                     ColumnValue="Requested"
+                                     Color="Blue" />
+                <kanban:KanbanColumn Caption="In progress"
+                                     CardLimit="2"
+                                     ColumnSpan="2"
+                                     Color="Orange">
+                    <kanban:KanbanColumn.Columns>
+                        <kanban:KanbanColumn Caption="Design" CardLimit="1" ColumnValue="Design" />
+                        <kanban:KanbanColumn Caption="Doing" ColumnSpan="2" ColumnValue="Doing" IsCollapsed="True" />
+                    </kanban:KanbanColumn.Columns>
+                </kanban:KanbanColumn>
+                <kanban:KanbanColumn Caption="Done" ColumnValue="Done" Color="Green" />
+                <kanban:KanbanColumn Caption="Archiv" ColumnValue="Archiv" IsCollapsed="True" />
+            </kanban:KanbanBoard.Columns>
+            <kanban:KanbanBoard.Swimlanes>
+                <kanban:KanbanSwimlane Background="Aquamarine" Caption="Lane 1" LaneValue="lane1" />
+                <kanban:KanbanSwimlane Background="AliceBlue" Caption="Lane 2" LaneValue="lane2" />
+                <kanban:KanbanSwimlane Background="DarkGoldenrod"
+                                       Caption="Lane 3"
+                                       Foreground="White"
+                                       IsCollapsed="True"
+                                       LaneValue="lane3" />
+            </kanban:KanbanBoard.Swimlanes>
+        </kanban:KanbanBoard>
+    </Grid>
+</Window>
